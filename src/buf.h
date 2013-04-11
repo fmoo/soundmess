@@ -12,4 +12,27 @@ typedef struct {
   size_t len16;
 } buf_t;
 
+
+template <class T>
+class PCMBuffer {
+
+public:
+  PCMBuffer(double frequency, int channels);
+
+private:
+  T *buf_;
+  size_t len_;
+  int channels_;
+
+  class Channel {
+    private:
+      T *buf_;
+      int offset_;
+
+    public:
+      Channel(PCMBuffer *buf, int offset) : buf_(&(buf->buf_[offset])), offset_(offset) { };
+
+  };
+};
+
 #endif
