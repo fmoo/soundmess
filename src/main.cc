@@ -1,9 +1,7 @@
 #include "AODevice.h"
 
-#include <stdint.h>
 #include <iostream>
 #include <cstring>
-#include <wchar.h>
 #include <sys/time.h>
 #include <unistd.h>
 

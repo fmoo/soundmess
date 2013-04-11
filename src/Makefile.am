@@ -1,3 +1,3 @@
 bin_PROGRAMS = soundmess
 
-soundmess_SOURCES = src/main.cc src/AODevice.cpp
+soundmess_SOURCES = main.cc AODevice.cc

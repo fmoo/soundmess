@@ -1,6 +1,8 @@
 #ifndef BUF_H
 #define BUF_H
 
+#include <stdint.h>
+
 typedef struct {
   union {
     int8_t *data8;
