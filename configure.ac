@@ -1,18 +1,31 @@
-AC_INIT(soundmess)
 
-PACKAGE=soundmess
-VERSION=0.0.1
+AC_INIT(soundmess, 0.1)
 
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+AM_INIT_AUTOMAKE
+
+AC_PROG_INSTALL
+AM_PROG_LIBTOOL
+AC_PROG_RANLIB
+
+AC_LANG([C++])
 
 AC_PROG_CXX
+
+# Libraries
+AC_CHECK_LIB(ao, ao_initialize())
+
+# Functions
 AC_CHECK_FUNCS([gettimeofday])
+AC_FUNC_MALLOC
+
+# Headers
 AC_CHECK_HEADERS([stdint.h unistd.h])
 AC_CHECK_HEADERS([sys/time.h])
 AC_CHECK_HEADERS([unistd.h])
+AC_CHECK_HEADERS([ao/ao.h])
 AC_CHECK_HEADER_STDBOOL
-AC_FUNC_MALLOC
-AC_PROG_CC
+
+# Types
 AC_TYPE_INT16_T
 AC_TYPE_INT8_T
 AC_TYPE_SIZE_T
