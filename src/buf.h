@@ -8,7 +8,8 @@ typedef struct {
     int8_t *data8;
     int16_t *data16;
   };
-  size_t len;
+  size_t len8;
+  size_t len16;
 } buf_t;
 
 #endif

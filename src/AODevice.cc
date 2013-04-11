@@ -48,12 +48,13 @@ int AODevice::play(char *output_samples, uint32_t num_bytes) {
 }
 
 int AODevice::play(buf_t *buf) {
-  return play((char *)buf->data8, buf->len);
+  return play((char *)buf->data8, buf->len8);
 }
 
 buf_t AODevice::makeBuffer(double duration) {
   buf_t result;
-  result.len = (size_t)(duration * bitsPerSample_ / 8.0 * bitrate_ * channels_);
-  result.data8 = (int8_t *)malloc(result.len);
+  result.len8 = (size_t)(duration * bitsPerSample_ / 8.0 * bitrate_ * channels_);
+  result.data8 = (int8_t *)malloc(result.len8);
+  result.len16 = result.len8 / 2;
   return result;
 }

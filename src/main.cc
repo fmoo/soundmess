@@ -1,11 +1,14 @@
-#include "AODevice.h"
-
 #include <iostream>
 #include <cstring>
 #include <sys/time.h>
 #include <unistd.h>
+#include <cmath>
+
+#include "AODevice.h"
+#include "ftimer.h"
 
 double MIDDLE_C = 261.626;
+double MIDDLE_C_PERIOD = 1.0 / MIDDLE_C;
 
 
 double doubletime() {
@@ -15,11 +18,23 @@ double doubletime() {
   return (double)tv.tv_sec + ((double)tv.tv_usec / 1000000.0);
 }
 
-void initBuffer(buf_t *buf) {
-  // 1 second of 2 channel, 16-bit audio at 44.1kbps
-  for (int i = 0; i < buf->len / 2; i++) {
-    buf->data16[i] = -0x0010;
-    //buffer[i] = 0x0000;
+void initBuffer(buf_t *buf, const int rate) {
+  FTimer ft(rate);
+  double amp = 0x7fff;
+  for (int i = 0; i < buf->len16; i += 2) {
+    double t = ft.getTime();
+    double _garbage;
+
+    // hack divide by 2 to accommodate 2-channel audio ?
+    double t0 = modf(t / MIDDLE_C_PERIOD, &_garbage);
+
+    // sawtooth
+    buf->data16[i] = (fabs(t0 - 0.5) - 0.25) * 4 * 0x7fff;
+    buf->data16[i + 1] = (fabs(t0 - 0.5) - 0.25) * 4 * 0x7fff;
+
+    // square
+    //buf->data16[i] = 0x7fff * (t0 > 0.5 ? 1 : -1);
+    ft.tick();
   }
 }
 
@@ -37,7 +52,7 @@ int main(int argc, char **argv) {
   ao.open();
 
   buf_t buf = ao.makeBuffer(5.0);
-  initBuffer(&buf);
+  initBuffer(&buf, ao.getSamplingRate());
 
   double t0 = doubletime();
   printf("Playing buffer...");
