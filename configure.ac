@@ -1,5 +1,7 @@
 
 AC_INIT(soundmess, 0.1)
+AC_CONFIG_HEADERS([src/config.h])
+AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE
 
@@ -11,11 +13,15 @@ AC_LANG([C++])
 
 AC_PROG_CXX
 
+AX_CXX_COMPILE_STDCXX_11(noext, mandatory)
+
+
 # Libraries
 AC_CHECK_LIB(ao, ao_initialize())
 
 # Functions
 AC_CHECK_FUNCS([gettimeofday])
+AC_CHECK_FUNCS([modf])
 AC_FUNC_MALLOC
 
 # Headers
